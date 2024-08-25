@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
@@ -5,8 +6,6 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
-from flask import Flask, request, jsonify, render_template, redirect, url_for
-
 
 # Load data
 data = pd.read_csv('Training.csv')
@@ -58,6 +57,7 @@ def index():
 @app.route('/redirect_to_index')
 def redirect_to_index():
     return redirect(url_for('index'))
+
 @app.route('/Description')
 def description():
     return render_template('Description.html')
@@ -84,5 +84,9 @@ def predict():
     prediction = voting_clf.predict(symptoms_reshaped)
     return jsonify({'predicted_disease': prediction[0]})
 
+# Run the app
+def handler(request):
+    return app(request)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
