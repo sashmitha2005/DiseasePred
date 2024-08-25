@@ -1,0 +1,15 @@
+{
+    "builds": [
+      {
+        "src": "app.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/static/(.*)",
+        "dest": "https://your-external-storage-url.com/static/$1"
+      }
+    ]
+  }
+  
