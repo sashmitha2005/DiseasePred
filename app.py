@@ -68,25 +68,26 @@ def precautions():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
-    symptoms = data.get('symptoms', [])
-    input_vector = [0] * len(symptom_columns)
+    try:
+        data = request.json
+        symptoms = data.get('symptoms', [])
+        input_vector = [0] * len(symptom_columns)
+        
+        # Map symptoms to input_vector
+        for symptom in symptoms:
+            if symptom in symptom_columns:
+                index = symptom_columns.index(symptom)
+                input_vector[index] = 1
+            else:
+                return jsonify({"error": f"Symptom '{symptom}' not recognized"}), 400
+        
+        symptoms_reshaped = [input_vector]
+        prediction = voting_clf.predict(symptoms_reshaped)
+        return jsonify({'predicted_disease': prediction[0]})
     
-    # Map symptoms to input_vector
-    for symptom in symptoms:
-        if symptom in symptom_columns:
-            index = symptom_columns.index(symptom)
-            input_vector[index] = 1
-        else:
-            return jsonify({"error": f"Symptom '{symptom}' not recognized"}), 400
-    
-    symptoms_reshaped = [input_vector]
-    prediction = voting_clf.predict(symptoms_reshaped)
-    return jsonify({'predicted_disease': prediction[0]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Run the app
-def handler(request):
-    return app(request)
-
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False)  # Set to True for development

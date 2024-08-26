@@ -118,22 +118,38 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch JSON data
-            fetch('/static/disease_description.json')
-                .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
-                .then(data => {
-                    document.getElementById('disease-form').addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        const diseaseName = document.getElementById('Disease').value.trim().toLowerCase();
-                        const descriptionElement = document.getElementById('text');
-                        const disease = data.find(item => item.Disease.toLowerCase() === diseaseName);
+        
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch JSON data
+        fetch('/static/disease_description.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Add event listener for the form submission
+                document.getElementById('disease-form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const diseaseName = document.getElementById('Disease').value.trim().toLowerCase();
+                    const descriptionElement = document.getElementById('text');
+                    
+                    // Find the matching disease in the data
+                    const disease = data.find(item => item.Disease.toLowerCase() === diseaseName);
+                    
+                    // Display the description or an error message
+                    descriptionElement.textContent = disease 
+                        ? disease.Symptom_Description 
+                        : 'Description not found for the entered disease.';
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON data:', error);
+                document.getElementById('text').textContent = 'Error loading disease descriptions.';
+            });
+    });
+</script>
 
-                        descriptionElement.textContent = disease ? disease.Symptom_Description : 'Description not found for the entered disease.';
-                    });
-                })
-                .catch(error => console.error('Error fetching the JSON data:', error));
-        });
-    </script>
 </body>
 </html>
