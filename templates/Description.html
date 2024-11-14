@@ -9,7 +9,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #333; /* Grey background color */
+            background-color: #333;
             color: #333;
         }
         .container {
@@ -120,7 +120,7 @@
     <script>
         
     document.addEventListener('DOMContentLoaded', function() {
-        // Fetch JSON data
+     
         fetch('/static/disease_description.json')
             .then(response => {
                 if (!response.ok) {
@@ -129,16 +129,16 @@
                 return response.json();
             })
             .then(data => {
-                // Add event listener for the form submission
+                
                 document.getElementById('disease-form').addEventListener('submit', function(event) {
                     event.preventDefault();
                     const diseaseName = document.getElementById('Disease').value.trim().toLowerCase();
                     const descriptionElement = document.getElementById('text');
                     
-                    // Find the matching disease in the data
+                    
                     const disease = data.find(item => item.Disease.toLowerCase() === diseaseName);
                     
-                    // Display the description or an error message
+                   
                     descriptionElement.textContent = disease 
                         ? disease.Symptom_Description 
                         : 'Description not found for the entered disease.';

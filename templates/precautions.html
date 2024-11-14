@@ -24,7 +24,7 @@
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 60px; /* Extra space for footer */
+    margin-bottom: 60px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,7 +52,7 @@ label {
 
 input[type="text"] {
     width: 100%;
-    max-width: 400px; /* Limit the width of the input field */
+    max-width: 400px; 
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ced4da;
@@ -92,7 +92,7 @@ button:hover {
     text-align: left;
     width: 100%;
     max-width: 600px;
-    overflow: auto; /* Ensure content is contained */
+    overflow: auto;
 }
 
 footer {
@@ -148,7 +148,7 @@ footer {
                 const diseaseName = document.getElementById('disease').value.trim().toLowerCase();
                 const precautionsElement = document.getElementById('precautions-text');
                 
-                // Fetch JSON data
+              
                 fetch('/static/disease_precaution.json')
                     .then(response => {
                         if (!response.ok) {
@@ -157,7 +157,7 @@ footer {
                         return response.json();
                     })
                     .then(data => {
-                        // Find the disease precautions
+                        
                         const disease = data.find(item => item.Disease.toLowerCase() === diseaseName);
 
                         if (disease) {
